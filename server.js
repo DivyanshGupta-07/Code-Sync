@@ -3,6 +3,7 @@ import http from "http";
 import { Server } from "socket.io";
 import ACTIONS from "./src/Actions.js";
 import cors from "cors";
+import path from "path";
 
 const app = express();
 app.use(cors());
@@ -12,6 +13,13 @@ const io = new Server(server, {
     origin: "*",
     methods: ["GET", "POST"],
   },
+});
+
+app.use(express.static("build"));
+app.use((req, res, next) => {
+  // console.log("__dirname", path.resolve());
+  // console.log("path : ", path.join(path.resolve(), "build", "index.html"));
+  res.sendFile(path.join(path.resolve(), "build", "index.html"));
 });
 
 const userSocketMap = {};
